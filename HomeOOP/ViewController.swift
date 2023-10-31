@@ -2,10 +2,10 @@ import UIKit
 
 
 class Menu {
-    var snaks: [Product]
-    var mainMenu: [Product]
-    var beverages: [Product]
-    var desserts: [Product]
+    var snaks: [Product] = []
+    var mainMenu: [Product] = []
+    var beverages: [Product] = []
+    var desserts: [Product] = []
     init(snaks: [Product], mainMenu: [Product], beverages: [Product], desserts: [Product]) {
         self.snaks = snaks
         self.mainMenu = mainMenu
@@ -26,6 +26,7 @@ class Coffee: Product{
         price = 1
     }
 }
+
 class Pizza: Product{
     override init() {
         super .init()
@@ -33,6 +34,7 @@ class Pizza: Product{
         price = 3
     }
 }
+
 class Beer: Product{
     override init() {
         super .init()
@@ -40,6 +42,7 @@ class Beer: Product{
         price = 5
     }
 }
+
 class Meat: Product{
     override init() {
         super .init()
@@ -56,11 +59,19 @@ class Carbonara: Product{
     }
 }
 
+let coffee = Coffee()
+let pizza = Pizza()
+let beer = Beer()
+let meat = Meat()
+let carbonara = Carbonara()
+
 class Restaurant {
     static let shared = Restaurant()
     var isStarted: Bool = false
     private(set) var sum: Int = 0
     private init() {}
+
+    let menu = Menu(snaks: [pizza], mainMenu: [meat,carbonara], beverages: [beer], desserts: [coffee])
     
     func sumCount(item: Product){
         print("Сейчас заказали: \(item.name), Стоимость: \(item.price) руб")
@@ -79,80 +90,64 @@ class Restaurant {
     }
 }
 
-
-
 //func productPrint(item: Product) {
 //        print("Название: \(item.name), Стоимость: \(item.price) руб")
 //}
 
 class ViewController: UIViewController {
     
+    let restaurant = Restaurant.shared
     
     @IBAction func start(_ sender: UIButton) {
-        let button = Restaurant.shared
-        button.startJob()
+        restaurant.startJob()
     }
-    
     
     @IBAction func stop(_ sender: UIButton) {
-        let button = Restaurant.shared
-        button.stopJob()
+        restaurant.stopJob()
     }
-    
     
     @IBAction func Latte(_ sender: UIButton) {
-        let button = Restaurant.shared
-        if button.isStarted == true{
-            button.sumCount(item: Coffee())
+        if restaurant.isStarted {
+            restaurant.sumCount(item: restaurant.menu.desserts[0])
         }else {
-            button.warnPrint()
+            restaurant.warnPrint()
         }
     }
-    
     
     @IBAction func Meat(_ sender: UIButton) {
-        let button = Restaurant.shared
-        if button.isStarted == true{
-            button.sumCount(item: HomeOOP.Meat())
+        if restaurant.isStarted {
+            restaurant.sumCount(item: restaurant.menu.mainMenu[0])
         }else {
-            button.warnPrint()
+            restaurant.warnPrint()
         }
     }
-    
     
     @IBAction func Beer(_ sender: UIButton) {
-        let button = Restaurant.shared
-        if button.isStarted == true{
-            button.sumCount(item: HomeOOP.Beer())
+        if restaurant.isStarted {
+            restaurant.sumCount(item: restaurant.menu.beverages[0])
         }else {
-            button.warnPrint()
+            restaurant.warnPrint()
         }
     }
-    
-    
     
     @IBAction func Pizza(_ sender: UIButton) {
-        let button = Restaurant.shared
-        if button.isStarted == true{
-            button.sumCount(item: HomeOOP.Pizza())
+        if restaurant.isStarted {
+            restaurant.sumCount(item: restaurant.menu.snaks[0])
         }else {
-            button.warnPrint()
+            restaurant.warnPrint()
         }
     }
     
-    
     @IBAction func Carbonara(_ sender: Any) {
-        let button = Restaurant.shared
-        if button.isStarted == true{
-            button.sumCount(item: HomeOOP.Carbonara())
+        if restaurant.isStarted {
+            restaurant.sumCount(item: restaurant.menu.mainMenu[1])
         }else {
-            button.warnPrint()
+            restaurant.warnPrint()
         }
     }
     
         override func viewDidLoad() {
             super.viewDidLoad()
-            let test = Coffee()
 //            productPrint(item: test)
         }
     }
